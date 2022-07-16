@@ -9,5 +9,3 @@ with open('speedsive/logging.yml', 'rt') as f:
 logging.config.dictConfig(config)
 
 logger = logging.getLogger("speedsive")
-
-print("hola")
