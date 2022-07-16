@@ -2,3 +2,5 @@
 .DS_Store
 speedsive/logs/
 .vscode
+__pycache__/
+*.pyc
