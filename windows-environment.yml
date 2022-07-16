@@ -43,3 +43,6 @@ dependencies:
   - yaml=0.2.5
   - zipp=3.8.0
   - zlib=1.2.12
+  - moviepy=1.0.3
+  - pytube=12.1.0
+  - pydub=0.25.1
