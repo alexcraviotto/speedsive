@@ -2,7 +2,7 @@ import logging
 import yaml
 import logging.config
 
-with open('speedsive/logging.yml', 'rt') as f:
+with open("../../speedsive/logging.yml", "rt") as f:
     config = yaml.safe_load(f.read())
     f.close()
 
