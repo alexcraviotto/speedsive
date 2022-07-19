@@ -1,6 +1,7 @@
 from moviepy.editor import VideoFileClip  # type: ignore
 from pydub import AudioSegment  # type: ignore
 from os.path import dirname, join, realpath
+
 # from sys import path, stdin
 import urllib.request
 import re
@@ -10,14 +11,42 @@ import shutil
 
 
 class MusicConverter:
-    """ Initialise the Class MusicConversor for
+    """Initialise the Class MusicConversor for
     downloading and exporting songs from Youtube."""
 
     def __init__(self):
         self.songs = {}
-        self.ENCODED_WORDS = ["&", "!", "#", "$", "%", "'", "(", ")", "*", "+",
-                              ",", ".", "/", ":", ";", "<", "=", ">", "?", "@",
-                              "^", "_", "{", "}", "¬", "€", "~", "¿", "¡"]
+        self.ENCODED_WORDS = [
+            "&",
+            "!",
+            "#",
+            "$",
+            "%",
+            "'",
+            "(",
+            ")",
+            "*",
+            "+",
+            ",",
+            ".",
+            "/",
+            ":",
+            ";",
+            "<",
+            "=",
+            ">",
+            "?",
+            "@",
+            "^",
+            "_",
+            "{",
+            "}",
+            "¬",
+            "€",
+            "~",
+            "¿",
+            "¡",
+        ]
         self.output = input("What format would you like it in (wav/mp3)?: ")
 
     def export_audiofile(self, url: str, name: str) -> None:
@@ -53,17 +82,17 @@ class MusicConverter:
         # Move the audio file to its output directory
         if os.path.exists(join(BASE_DIR, "songs")):
             shutil.move(
-                "".join([x for x in solution if x != "/"]),
-                join(BASE_DIR, "songs"))
+                "".join([x for x in solution if x != "/"]), join(BASE_DIR, "songs")
+            )
         else:
             os.mkdir(join(BASE_DIR, "songs"))
             shutil.move(
-                "".join([x for x in solution if x != "/"]),
-                join(BASE_DIR, "songs"))
+                "".join([x for x in solution if x != "/"]), join(BASE_DIR, "songs")
+            )
 
     def downloadSongs(self) -> None:
         """
-            Download the songs whatever you want from Youtube.
+        Download the songs whatever you want from Youtube.
         """
         n_songs = int(input("Nº songs: "))
         # The loop save each token of the song from the Youtube's HTML
@@ -73,12 +102,13 @@ class MusicConverter:
             for w in self.ENCODED_WORDS:
                 # Encode each word found
                 if song.find(w) > 0:
-                    url_song = url_song.replace(w, f'%{int(ord(w) - 12)}')
+                    url_song = url_song.replace(w, f"%{int(ord(w) - 12)}")
 
-            url_song = url_song.replace(' ', '+')
+            url_song = url_song.replace(" ", "+")
 
             html = urllib.request.urlopen(
-                f"https://www.youtube.com/results?search_query={url_song}")
+                f"https://www.youtube.com/results?search_query={url_song}"
+            )
             html_decoded = html.read().decode()
             pattern = re.findall(r"watch\?v=(\S{11})", html_decoded)[0]
             link = "https://www.youtube.com/watch?v=" + pattern
@@ -90,16 +120,17 @@ class MusicConverter:
 
     def downloadSingleSong(self, name: str) -> None:
         """
-            Download the song you want from Youtube.
+        Download the song you want from Youtube.
         """
         url_song = name
         for w in self.ENCODED_WORDS:
             # Encode each word found
             if name.find(w) > 0:
-                url_song = url_song.replace(w, f'%{int(ord(w) - 12)}')
-        url_song = url_song.replace(' ', '+')
+                url_song = url_song.replace(w, f"%{int(ord(w) - 12)}")
+        url_song = url_song.replace(" ", "+")
         html = urllib.request.urlopen(
-            f"https://www.youtube.com/results?search_query={url_song}")
+            f"https://www.youtube.com/results?search_query={url_song}"
+        )
         html_decoded = html.read().decode()
         pattern = re.findall(r"watch\?v=(\S{11})", html_decoded)[0]
         link = "https://www.youtube.com/watch?v=" + pattern
@@ -124,8 +155,8 @@ class MusicConverter:
         # Manually override the frame_rate. This tells the computer how many
         # samples to play per second
         sound_with_altered_frame_rate = sound._spawn(
-            sound.raw_data,
-            overrides={"frame_rate": int(sound.frame_rate * speed)})
+            sound.raw_data, overrides={"frame_rate": int(sound.frame_rate * speed)}
+        )
         # convert the sound with altered frame rate to a standard frame rate
         # so that regular playback programs will work right. They often only
         # know how to play audio at standard frame rate (like 44.1k)

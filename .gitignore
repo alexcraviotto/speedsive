@@ -4,3 +4,4 @@ speedsive/logs/
 .vscode
 __pycache__/
 *.pyc
+speedsive/.secret
