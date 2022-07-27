@@ -137,11 +137,11 @@ class Youtube:
                 .execute()
             )
 
-            service.thumbnails().set(
-                videoId=responseUpload.get("id"),
-                media_body=MediaFileUpload(title + ".png"),
-            ).execute()
-            logger.info(f"The video: [{title}] has been uploaded correctly")
+            # service.thumbnails().set(
+            #     videoId=responseUpload.get("id"),
+            #     media_body=MediaFileUpload(title + ".png"),
+            # ).execute()
+            # logger.info(f"The video: [{title}] has been uploaded correctly")
 
         except RefreshError as e:
             mustRefresh = True
