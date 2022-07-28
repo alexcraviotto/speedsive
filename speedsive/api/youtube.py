@@ -8,8 +8,7 @@ from google.auth.exceptions import RefreshError
 
 import sys
 
-sys.path.append("..")
-from logger import logger  # type: ignore
+from logger import logger 
 
 
 class Youtube:
