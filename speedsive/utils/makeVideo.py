@@ -2,13 +2,14 @@ from moviepy.editor import AudioFileClip, ImageClip, TextClip, CompositeVideoCli
 
 from musicConverter import MusicConverter
 
-from youtube import Youtube
+from api.youtube import Youtube
 
 from logger import logger  # type: ignore
 
+
 def makeVideo(name: str):
-    """Create and save a video file to output_path after 
-    combining a static image that is located in image_path 
+    """Create and save a video file to output_path after
+    combining a static image that is located in image_path
     with an audio file in audio_path"""
 
     converter = MusicConverter()
@@ -28,12 +29,10 @@ def makeVideo(name: str):
     # set the FPS to 1
     video_clip.fps = 1
 
-    txt_clip = TextClip(f"{name}",
-                        fontsize=75, color='white')
-    txt_clip = txt_clip.set_pos('center')
+    txt_clip = TextClip(f"{name}", fontsize=75, color="white")
+    txt_clip = txt_clip.set_pos("center")
     # write the resuling video clip
-    video = CompositeVideoClip(
-        [video_clip, txt_clip]).set_duration(audio_clip.duration)
+    video = CompositeVideoClip([video_clip, txt_clip]).set_duration(audio_clip.duration)
 
     video.write_videofile(f"./{name}.mp4", codec="libx264", fps=24, threads=4)
-    logger.info(f'[{name}] video is done')
+    logger.info(f"[{name}] video is done")
