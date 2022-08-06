@@ -7,7 +7,9 @@ from logger import logger
 class Spotify:
     def __init__(self):
 
-        with open("../speedsive/.secret/spotify/client_creds.json", "r") as read_file:
+        with open(
+            ".././speedsive/speedsive/.secret/spotify/client_creds.json", "r"
+        ) as read_file:
             resp = json.load(read_file)
 
         self.CLIENT_ID = resp["client_id"]
@@ -17,6 +19,7 @@ class Spotify:
         self.ENCODED_SECRETS = base64.b64encode(
             f"{self.CLIENT_ID}:{self.CLIENT_SECRET}".encode("ascii")
         ).decode("ascii")
+        read_file.close()
 
     def getToken(self):
 
@@ -65,3 +68,8 @@ class Spotify:
             return tracklist
         except Exception as e:
             logger.error(f"Failed to get the playlist tracklist correctly: {e}")
+
+
+d = Spotify()
+t = d.getPlaylistTracklist("1TDAhYu05wEEBhDyGYXEw7", 20)
+print(t)

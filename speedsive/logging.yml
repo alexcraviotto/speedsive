@@ -18,7 +18,7 @@ handlers:
         backupCount: 5
         level: DEBUG
         formatter: complex
-        filename : ../speedsive/logs/logs.log
+        filename : .././speedsive/speedsive/logs/logs.log
 
 loggers:
     speedsive:   
