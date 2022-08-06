@@ -8,6 +8,7 @@ import re
 from pytube import YouTube  # type: ignore
 import os
 import shutil
+from Path import reducePath
 
 from logger import logger
 
@@ -60,7 +61,7 @@ class MusicConverter:
             name (str): Name of the song
         """
 
-        logger.info(f'Exporting [{name} to mp3]')
+        logger.info(f"Exporting [{name} to mp3]")
         # Download the mp4 video from Youtube
         mp4 = YouTube(url).streams.get_highest_resolution().download()
 
@@ -81,18 +82,14 @@ class MusicConverter:
         # Delete the mp4 video in between for saving the audio file
         os.remove(mp4)
         BASE_DIR = dirname(realpath(__file__))
+        DIR = reducePath(BASE_DIR, 2)
+
         # Move the audio file to its output directory
-        if os.path.exists(join(BASE_DIR, "songs")):
-            shutil.move(
-                "".join([x for x in solution if x != "/"]
-                        ), join(BASE_DIR, "songs")
-            )
+        if os.path.exists(join(DIR, "songs")):
+            shutil.move("".join([x for x in solution if x != "/"]), join(DIR, "songs"))
         else:
-            os.mkdir(join(BASE_DIR, "songs"))
-            shutil.move(
-                "".join([x for x in solution if x != "/"]
-                        ), join(BASE_DIR, "songs")
-            )
+            os.mkdir(join(DIR, "songs"))
+            shutil.move("".join([x for x in solution if x != "/"]), join(DIR, "songs"))
 
     def downloadSongs(self) -> None:
         """
@@ -141,7 +138,7 @@ class MusicConverter:
         self.songs[name] = link
         # Export the song in its format given
         self.export_audiofile(link, name)
-        return AudioSegment.from_file(os.getcwd() + "/songs/"+name+".mp3")
+        return AudioSegment.from_file(os.getcwd() + "/songs/" + name + ".mp3")
 
     # ***SLOW DOWN AND SPEED UP FUNCTION***
 
@@ -160,12 +157,10 @@ class MusicConverter:
         # Manually override the frame_rate. This tells the computer how many
         # samples to play per second
         sound_with_altered_frame_rate = sound._spawn(
-            sound.raw_data, overrides={
-                "frame_rate": int(sound.frame_rate * speed)}
+            sound.raw_data, overrides={"frame_rate": int(sound.frame_rate * speed)}
         )
-        logger.info(f'Sound rate altered correctly')
+        logger.info(f"Sound rate altered correctly")
         # convert the sound with altered frame rate to a standard frame rate
         # so that regular playback programs will work right. They often only
         # know how to play audio at standard frame rate (like 44.1k)
         return sound_with_altered_frame_rate.set_frame_rate(sound.frame_rate)
-

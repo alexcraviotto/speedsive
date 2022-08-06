@@ -6,8 +6,6 @@ import requests
 import json
 from google.auth.exceptions import RefreshError
 
-import sys
-
 from logger import logger
 
 
