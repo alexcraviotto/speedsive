@@ -14,7 +14,7 @@ if not exists(join(BASE_DIR, "logs") + "/logs.log"):
     file = open(join(BASE_DIR, "logs") + "/logs.log", "w")
     file.close()
 
-with open("../../speedsive/logging.yml", "rt") as f:
+with open("logging.yml", "rt") as f:
     config = yaml.safe_load(f.read())
     f.close()
 
