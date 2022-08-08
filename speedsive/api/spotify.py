@@ -1,7 +1,7 @@
 import requests
 import base64
 import json
-from logger import logger
+from speedsive.logger import logger
 
 
 class Spotify:
@@ -53,15 +53,18 @@ class Spotify:
                 headers=headers,
             )
             jsonResponse = r.json()
-            i = 0
 
             for tracks in jsonResponse["items"]:
-                tracklist[jsonResponse["items"][i]["track"]["name"]] = jsonResponse[
-                    "items"
-                ][i]["track"]["artists"][0]["name"]
-                i += 1
+                tracklist[tracks["track"]["name"]] = tracks["track"]["artists"][0][
+                    "name"
+                ]
 
             logger.info("The tracklist of the playlist has been obtained correctly")
             return tracklist
         except Exception as e:
             logger.error(f"Failed to get the playlist tracklist correctly: {e}")
+
+
+sp = Spotify()
+tracklist = sp.getPlaylistTracklist("37i9dQZF1DWXRqgorJj26U", 5)
+print(tracklist)

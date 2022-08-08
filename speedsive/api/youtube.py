@@ -6,7 +6,7 @@ import requests
 import json
 from google.auth.exceptions import RefreshError
 
-from logger import logger
+from speedsive.logger import logger
 
 
 class Youtube:

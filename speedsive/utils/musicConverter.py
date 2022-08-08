@@ -10,7 +10,7 @@ import os
 import shutil
 from Path import reducePath
 
-from logger import logger
+from speedsive.logger import logger
 
 
 class MusicConverter:
@@ -82,7 +82,7 @@ class MusicConverter:
         # Delete the mp4 video in between for saving the audio file
         os.remove(mp4)
         BASE_DIR = dirname(realpath(__file__))
-        DIR = reducePath(BASE_DIR, 2)
+        DIR = reducePath(BASE_DIR, 1)
 
         # Move the audio file to its output directory
         if os.path.exists(join(DIR, "songs")):

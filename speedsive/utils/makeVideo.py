@@ -2,9 +2,10 @@ from moviepy.editor import AudioFileClip, ImageClip, TextClip, CompositeVideoCli
 
 from musicConverter import MusicConverter
 
-from api.youtube import Youtube
+from speedsive.api.youtube import Youtube
 
-from logger import logger  # type: ignore
+from speedsive.logger import logger  # type: ignore
+from makeThumbnail import makeThumbnail
 
 
 def makeVideo(name: str):
@@ -19,8 +20,11 @@ def makeVideo(name: str):
         slow.export(out_f, format="mp3")
     # create the audio clip object
     audio_clip = AudioFileClip(f"./songs/{name}_speedup.mp3")
+
+    # create the thumbnail
+    makeThumbnail(1920, 1080, ["emogirl"])
     # create the image clip object
-    image_clip = ImageClip(f"./images/{name}.jpeg")
+    image_clip = ImageClip(f"{name}.png")
 
     # use set_audio method from image clip to combine the audio with the image
     video_clip = image_clip.set_audio(audio_clip)
