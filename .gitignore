@@ -5,3 +5,4 @@ speedsive/logs/
 __pycache__/
 *.pyc
 speedsive/.secret
+speedsive/db/speedsive.db

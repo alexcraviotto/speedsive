@@ -8,6 +8,8 @@ from google.auth.exceptions import RefreshError
 
 from logger import logger
 
+from utils import makeVideo
+
 
 class Youtube:
     def __init__(self):
