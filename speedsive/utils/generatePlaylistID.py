@@ -1,5 +1,4 @@
 from logger import logger
-
 def generatePlaylistID():
     try:
         with open('././speedsive/playlists.txt','r+') as fp:
@@ -12,8 +11,6 @@ def generatePlaylistID():
                 fp.writelines(lines[1:])
             except:
                 logger.warn('You need to add more playlists ID on the file')
-            return result
+            return result.strip()
     except:
         logger.error('Error on playlistID generation')
-
-

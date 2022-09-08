@@ -10,7 +10,7 @@ import os
 import shutil
 from Path import reducePath
 
-from speedsive.logger import logger
+from logger import logger
 
 
 class MusicConverter:
@@ -91,34 +91,21 @@ class MusicConverter:
             os.mkdir(join(DIR, "songs"))
             shutil.move("".join([x for x in solution if x != "/"]), join(DIR, "songs"))
 
-    def downloadSongs(self) -> None:
+    def downloadSongs(self, title: str, songs: dict) -> None:
         """
         Download the songs whatever you want from Youtube.
         """
-        n_songs = int(input("Nº songs: "))
+        n_songs = len(songs.keys())
+
+        combined = AudioSegment.empty()
         # The loop save each token of the song from the Youtube's HTML
         for number in range(n_songs):
-            song = input("Name of the song: ")
-            url_song = song
-            for w in self.ENCODED_WORDS:
-                # Encode each word found
-                if song.find(w) > 0:
-                    url_song = url_song.replace(w, f"%{int(ord(w) - 12)}")
-
-            url_song = url_song.replace(" ", "+")
-
-            html = urllib.request.urlopen(
-                f"https://www.youtube.com/results?search_query={url_song}"
-            )
-            html_decoded = html.read().decode()
-            pattern = re.findall(r"watch\?v=(\S{11})", html_decoded)[0]
-            link = "https://www.youtube.com/watch?v=" + pattern
-            self.songs[song] = link
-
-        # Export each song in its format given
-        for song, link in self.songs.items():
-            self.export_audiofile(link, song)
-
+            individualSong = songs.popitem()
+            song = str(individualSong[0]) + ' ' + str(individualSong[1])
+            combined += self.downloadSingleSong(song)
+        file_handle = combined.export(os.getcwd() + '/songs/' + title + '.mp3')
+        logger.info('Audio files combined')
+        
     def downloadSingleSong(self, name: str) -> AudioSegment:
         """
         Download the song you want from Youtube.
@@ -164,3 +151,4 @@ class MusicConverter:
         # so that regular playback programs will work right. They often only
         # know how to play audio at standard frame rate (like 44.1k)
         return sound_with_altered_frame_rate.set_frame_rate(sound.frame_rate)
+

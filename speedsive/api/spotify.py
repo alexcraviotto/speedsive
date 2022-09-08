@@ -1,7 +1,7 @@
 import requests
 import base64
 import json
-from speedsive.logger import logger
+from logger import logger
 
 
 class Spotify:
