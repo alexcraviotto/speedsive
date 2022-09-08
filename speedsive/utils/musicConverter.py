@@ -8,7 +8,7 @@ import re
 from pytube import YouTube  # type: ignore
 import os
 import shutil
-from Path import reducePath
+from utils.Path import reducePath
 
 from logger import logger
 
@@ -18,6 +18,8 @@ class MusicConverter:
     downloading and exporting songs from Youtube."""
 
     def __init__(self):
+        self.BASE_DIR = dirname(realpath(__file__))
+        self.SPEEDSIVE_FOLDER_PATH = reducePath(self.BASE_DIR, 1)
         self.songs = {}
         self.ENCODED_WORDS = [
             "&",
@@ -81,31 +83,42 @@ class MusicConverter:
 
         # Delete the mp4 video in between for saving the audio file
         os.remove(mp4)
-        BASE_DIR = dirname(realpath(__file__))
-        DIR = reducePath(BASE_DIR, 1)
 
         # Move the audio file to its output directory
-        if os.path.exists(join(DIR, "songs")):
-            shutil.move("".join([x for x in solution if x != "/"]), join(DIR, "songs"))
+        if os.path.exists(join(self.SPEEDSIVE_FOLDER_PATH, "songs")):
+            shutil.move(
+                "".join([x for x in solution if x != "/"]),
+                join(self.SPEEDSIVE_FOLDER_PATH, "songs"),
+            )
         else:
-            os.mkdir(join(DIR, "songs"))
-            shutil.move("".join([x for x in solution if x != "/"]), join(DIR, "songs"))
+            os.mkdir(join(self.SPEEDSIVE_FOLDER_PATH, "songs"))
+            shutil.move(
+                "".join([x for x in solution if x != "/"]),
+                join(self.SPEEDSIVE_FOLDER_PATH, "songs"),
+            )
 
-    def downloadSongs(self, title: str, songs: dict) -> None:
+    def downloadSongs(self, title: str, songs: dict, speedTag: str = "NULL") -> None:
         """
-        Download the songs whatever you want from Youtube.
+        Download the songs whatever you want from Youtube.\n
+        speedTag can be "SU"(Speed Up) or "SL"(Slow Down) or "NULL"(Remains the same)
         """
         n_songs = len(songs.keys())
+        speedRate = 1.0
+        if speedTag != "NULL":
+            speedRate = 1.25 if speedTag == "SU" else 0.77
 
         combined = AudioSegment.empty()
         # The loop save each token of the song from the Youtube's HTML
         for number in range(n_songs):
             individualSong = songs.popitem()
-            song = str(individualSong[0]) + ' ' + str(individualSong[1])
-            combined += self.downloadSingleSong(song)
-        file_handle = combined.export(os.getcwd() + '/songs/' + title + '.mp3')
-        logger.info('Audio files combined')
-        
+            song = str(individualSong[0]) + " " + str(individualSong[1])
+            combined += self.speedChange(self.downloadSingleSong(song), speedRate)
+
+            os.remove(join(self.SPEEDSIVE_FOLDER_PATH, "songs") + f"/{song}.mp3")
+
+        file_handle = combined.export(os.getcwd() + "/songs/" + title + ".mp3")
+        logger.info("Audio files combined")
+
     def downloadSingleSong(self, name: str) -> AudioSegment:
         """
         Download the song you want from Youtube.
@@ -151,4 +164,3 @@ class MusicConverter:
         # so that regular playback programs will work right. They often only
         # know how to play audio at standard frame rate (like 44.1k)
         return sound_with_altered_frame_rate.set_frame_rate(sound.frame_rate)
-

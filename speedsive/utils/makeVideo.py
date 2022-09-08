@@ -1,11 +1,11 @@
 from moviepy.editor import AudioFileClip, ImageClip, TextClip, CompositeVideoClip
 
-from musicConverter import MusicConverter
+from utils.musicConverter import MusicConverter
 
 from speedsive.api.youtube import Youtube
 
 from speedsive.logger import logger  # type: ignore
-from makeThumbnail import makeThumbnail
+from utils.makeThumbnail import makeThumbnail
 
 
 def makeVideo(name: str):
@@ -14,15 +14,16 @@ def makeVideo(name: str):
     with an audio file in audio_path"""
 
     converter = MusicConverter()
-    fileAudioSegment = converter.downloadSingleSong(name)
-    slow = converter.speedChange(fileAudioSegment, 1.2)
-    with open(f"./songs/{name}_speedup.mp3", "wb") as out_f:
-        slow.export(out_f, format="mp3")
+    # fileAudioSegment = converter.downloadSingleSong(name)
+    # slow = converter.speedChange(fileAudioSegment, 1.2)
+
+    # with open(f"./songs/{name}_speedup.mp3", "wb") as out_f:
+    #    slow.export(out_f, format="mp3")
     # create the audio clip object
-    audio_clip = AudioFileClip(f"./songs/{name}_speedup.mp3")
+    audio_clip = AudioFileClip(f"./songs/{name}.mp3")
 
     # create the thumbnail
-    makeThumbnail(1920, 1080, ["emogirl"])
+    makeThumbnail(name, 1920, 1080, ["emogirl"])
     # create the image clip object
     image_clip = ImageClip(f"{name}.png")
 
@@ -39,4 +40,5 @@ def makeVideo(name: str):
     video = CompositeVideoClip([video_clip, txt_clip]).set_duration(audio_clip.duration)
 
     video.write_videofile(f"./{name}.mp4", codec="libx264", fps=24, threads=4)
+
     logger.info(f"[{name}] video is done")

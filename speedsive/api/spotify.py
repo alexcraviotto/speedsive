@@ -2,14 +2,16 @@ import requests
 import base64
 import json
 from logger import logger
+from os.path import dirname, join, realpath, exists
+from utils.Path import reducePath
 
 
 class Spotify:
     def __init__(self):
+        BASE_DIR = dirname(realpath(__file__))
 
-        with open(
-            ".././speedsive/speedsive/.secret/spotify/client_creds.json", "r"
-        ) as read_file:
+        BASE_DIR = reducePath(BASE_DIR, 1)
+        with open(f"{BASE_DIR}/.secret/spotify/client_creds.json", "r") as read_file:
             resp = json.load(read_file)
 
         self.CLIENT_ID = resp["client_id"]
@@ -45,6 +47,9 @@ class Spotify:
             logger.error(f"Failed to generate credentials correctly: {e}")
 
     def getPlaylistTracklist(self, playlistID: str, limit: int):
+        if len(playlistID) != 22:
+            playlistID = playlistID.split("/")[-1].split("?")[0]
+
         tracklist = {}
 
         headers = {"Authorization": "Bearer " + self.getToken()}

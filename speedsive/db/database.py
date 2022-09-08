@@ -4,7 +4,7 @@ import sys, os
 from os.path import dirname, realpath
 
 sys.path.append(os.path.abspath(".."))
-from logger import logger
+from speedsive.logger import logger
 
 
 class Database:
