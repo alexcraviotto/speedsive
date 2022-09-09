@@ -5,14 +5,15 @@ from google.oauth2.credentials import Credentials
 import requests
 import json
 from google.auth.exceptions import RefreshError
-
-from speedsive.logger import logger
+import os
+from logger import logger
 
 
 class Youtube:
     def __init__(self):
         self.API_NAME = "youtube"
         self.API_VERSION = "v3"
+        
 
     def generateCredentials(self) -> Credentials:
         """Generate the necessary credentials to create the Google service.
@@ -21,7 +22,7 @@ class Youtube:
             Credentials: Credentials using OAuth 2.0 access and refresh tokens.
         """
         try:
-            with open("../.secret/youtube/client_creds.json", "r") as read_file:
+            with open("speedsive/.secret/youtube/client_creds.json", "r") as read_file:
                 resp = json.load(read_file)
             logger.info("Generating credentials...")
             return Credentials(

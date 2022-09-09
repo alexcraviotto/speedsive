@@ -1,10 +1,11 @@
 from moviepy.editor import AudioFileClip, ImageClip, TextClip, CompositeVideoClip
+from api import youtube
 
 from utils.musicConverter import MusicConverter
 
-from speedsive.api.youtube import Youtube
+from api.youtube import Youtube
 
-from speedsive.logger import logger  # type: ignore
+from logger import logger  # type: ignore
 from utils.makeThumbnail import makeThumbnail
 
 
@@ -23,7 +24,7 @@ def makeVideo(name: str):
     audio_clip = AudioFileClip(f"./songs/{name}.mp3")
 
     # create the thumbnail
-    makeThumbnail(name, 1920, 1080, ["emogirl"])
+    makeThumbnail(name, 1920, 1080, ["aesthetic"])
     # create the image clip object
     image_clip = ImageClip(f"{name}.png")
 
@@ -34,11 +35,17 @@ def makeVideo(name: str):
     # set the FPS to 1
     video_clip.fps = 1
 
-    txt_clip = TextClip(f"{name}", fontsize=75, color="white")
+    txt_clip = TextClip("levitate with\nspeed up tiktok audios", fontsize=75, color="white", font="Helvetica-bold",kerning=0.7)
     txt_clip = txt_clip.set_pos("center")
+    authorName = TextClip("luvder", fontsize=40, color="white", font="Helvetica-bold",kerning=0.5).set_position(("center", "bottom"))
     # write the resuling video clip
-    video = CompositeVideoClip([video_clip, txt_clip]).set_duration(audio_clip.duration)
+    video = CompositeVideoClip([video_clip, txt_clip, authorName]).set_duration(audio_clip.duration)
 
     video.write_videofile(f"./{name}.mp4", codec="libx264", fps=24, threads=4)
 
     logger.info(f"[{name}] video is done")
+
+    yt = Youtube()
+
+    yt.uploadVideo(f"./{name}.mp4", name, 10, "Thanks for watching :)\nIm not the owner of the songs and pictures used in the video, credits to their respective authors", ["tiktok speed up audio", "speed up audio", "aesthetic audio"], "private")
+

@@ -1,7 +1,7 @@
 import sys, os
 
 sys.path.append(os.path.abspath(".."))
-from speedsive.db.database import Database
+from db.database import Database
 
 
 def generateTitle():
@@ -12,6 +12,3 @@ def generateTitle():
     print(generatedTitle)
     database.uploadTitle(generatedTitle)
     return generatedTitle
-
-
-print(generateTitle())
