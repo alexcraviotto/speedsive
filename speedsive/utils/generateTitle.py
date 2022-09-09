@@ -6,7 +6,7 @@ from db.database import Database
 
 def generateTitle():
     database = Database()
-    generatedTitle = "sped up tiktok songs that make you levitate | pt. " + str(
+    generatedTitle = "speed up tiktok audios that make you levitate | pt. " + str(
         database.lastNumberOfTitle() + 1
     )
     print(generatedTitle)

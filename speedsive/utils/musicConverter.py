@@ -114,7 +114,7 @@ class MusicConverter:
             individualSong = songs.popitem()
             song = str(individualSong[0]) + " " + str(individualSong[1])
             combined += self.speedChange(self.downloadSingleSong(song), speedRate)
-            removeFile(join(os.getcwd(), "songs") + f"/{song}.mp3")
+            removeFile(join(os.getcwd(),"songs") + f"/{song}.mp3")
 
         file_handle = combined.export(os.getcwd() + "/songs/" + title + ".mp3")
         logger.info("Audio files combined")
@@ -143,7 +143,7 @@ class MusicConverter:
         ):
             self.export_audiofile(link, name)
         return AudioSegment.from_file(
-            self.SPEEDSIVE_FOLDER_PATH + "/songs/" + name + ".mp3"
+            os.getcwd() + "/songs/" + name + ".mp3"
         )
 
     # ***SLOW DOWN AND SPEED UP FUNCTION***

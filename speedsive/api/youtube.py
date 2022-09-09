@@ -74,7 +74,7 @@ class Youtube:
 
         if r.ok:
             try:
-                with open("../.secret/youtube/client_creds.json", "r+") as read_file:
+                with open("speedsive/.secret/youtube/client_creds.json", "r+") as read_file:
                     resp = json.load(read_file)
                     resp["access_token"] = r.json()["access_token"]
                     read_file.seek(0)

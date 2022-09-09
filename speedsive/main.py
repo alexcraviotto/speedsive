@@ -25,7 +25,9 @@ def main():
     songs = sp.getPlaylistTracklist(generatePlaylistID(), limit)
     md.downloadSongs(title, songs, "SU")
     makeVideo(title)
-    removeFile(join(md.SPEEDSIVE_FOLDER_PATH, "songs") + f"/{title}.mp3")
+    removeFile(f"./songs/{title}.mp3")
+    removeFile(f"{title}.mp4")
+    removeFile(f"{title}.png")
     logger.info("Waiting for the next process")
     sleep(43200)
 
