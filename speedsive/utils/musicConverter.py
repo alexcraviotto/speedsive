@@ -7,6 +7,7 @@ import urllib.request
 import re
 from pytube import YouTube  # type: ignore
 import os
+from utils.removeFile import removeFile
 import shutil
 from utils.Path import reducePath
 
@@ -82,7 +83,7 @@ class MusicConverter:
         video_clip.close()
 
         # Delete the mp4 video in between for saving the audio file
-        os.remove(mp4)
+        removeFile(mp4)
 
         # Move the audio file to its output directory
         if os.path.exists(join(self.SPEEDSIVE_FOLDER_PATH, "songs")):
@@ -113,8 +114,7 @@ class MusicConverter:
             individualSong = songs.popitem()
             song = str(individualSong[0]) + " " + str(individualSong[1])
             combined += self.speedChange(self.downloadSingleSong(song), speedRate)
-
-            os.remove(join(self.SPEEDSIVE_FOLDER_PATH, "songs") + f"/{song}.mp3")
+            removeFile(join(os.getcwd(), "songs") + f"/{song}.mp3")
 
         file_handle = combined.export(os.getcwd() + "/songs/" + title + ".mp3")
         logger.info("Audio files combined")
@@ -128,6 +128,7 @@ class MusicConverter:
             # Encode each word found
             if name.find(w) > 0:
                 url_song = url_song.replace(w, f"%{int(ord(w) - 12)}")
+        print(url_song)
         url_song = url_song.replace(" ", "+")
         html = urllib.request.urlopen(
             f"https://www.youtube.com/results?search_query={url_song}"
@@ -137,8 +138,13 @@ class MusicConverter:
         link = "https://www.youtube.com/watch?v=" + pattern
         self.songs[name] = link
         # Export the song in its format given
-        self.export_audiofile(link, name)
-        return AudioSegment.from_file(os.getcwd() + "/songs/" + name + ".mp3")
+        if not os.path.exists(
+            join(join(self.SPEEDSIVE_FOLDER_PATH, "songs"), f"{name}.mp3")
+        ):
+            self.export_audiofile(link, name)
+        return AudioSegment.from_file(
+            self.SPEEDSIVE_FOLDER_PATH + "/songs/" + name + ".mp3"
+        )
 
     # ***SLOW DOWN AND SPEED UP FUNCTION***
 

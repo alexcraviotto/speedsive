@@ -8,8 +8,8 @@ from utils.makeVideo import makeVideo
 from logger import logger
 from db.database import Database
 from apscheduler.schedulers.blocking import BlockingScheduler
+from utils.removeFile import removeFile
 from os.path import join
-
 
 logger.info("__Starting megagigachad Bot__")
 db = Database()
@@ -18,14 +18,17 @@ sp = Spotify()
 
 limit = 1
 
+
 def main():
     logger.info("Process started")
     title = generateTitle()
     songs = sp.getPlaylistTracklist(generatePlaylistID(), limit)
     md.downloadSongs(title, songs, "SU")
     makeVideo(title)
+    removeFile(join(md.SPEEDSIVE_FOLDER_PATH, "songs") + f"/{title}.mp3")
     logger.info("Waiting for the next process")
     sleep(43200)
 
-while(True):
+
+while True:
     main()
