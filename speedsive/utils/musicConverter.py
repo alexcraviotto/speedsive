@@ -111,11 +111,15 @@ class MusicConverter:
         combined = AudioSegment.empty()
         # The loop save each token of the song from the Youtube's HTML
         for number in range(n_songs):
-            individualSong = songs.popitem()
-            song = str(individualSong[0]) + " " + str(individualSong[1])
-            combined += self.speedChange(self.downloadSingleSong(song), speedRate)
-            removeFile(join(os.getcwd(),"songs") + f"/{song}.mp3")
-
+            try:
+                individualSong = songs.popitem()
+                song = str(individualSong[0]) + " " + str(individualSong[1])
+                combined += self.speedChange(self.downloadSingleSong(song), speedRate)
+                removeFile(join(os.getcwd(),"songs") + f"/{song}.mp3")
+            except:
+                pass
+        file_handle = combined.export(os.getcwd() + "/songs/" + title + ".mp3")
+        logger.info("Audio files combined")
         file_handle = combined.export(os.getcwd() + "/songs/" + title + ".mp3")
         logger.info("Audio files combined")
 
@@ -123,29 +127,31 @@ class MusicConverter:
         """
         Download the song you want from Youtube.
         """
-        url_song = name + " audio"
-        for w in self.ENCODED_WORDS:
-            # Encode each word found
-            if name.find(w) > 0:
-                url_song = url_song.replace(w, f"%{int(ord(w) - 12)}")
-        print(url_song)
-        url_song = url_song.replace(" ", "+")
-        html = urllib.request.urlopen(
-            f"https://www.youtube.com/results?search_query={url_song}"
-        )
-        html_decoded = html.read().decode()
-        pattern = re.findall(r"watch\?v=(\S{11})", html_decoded)[0]
-        link = "https://www.youtube.com/watch?v=" + pattern
-        self.songs[name] = link
-        # Export the song in its format given
-        if not os.path.exists(
-            join(join(self.SPEEDSIVE_FOLDER_PATH, "songs"), f"{name}.mp3")
-        ):
-            self.export_audiofile(link, name)
-        return AudioSegment.from_file(
-            os.getcwd() + "/songs/" + name + ".mp3"
-        )
-
+        try:
+            url_song = name + " audio"
+            for w in self.ENCODED_WORDS:
+                # Encode each word found
+                if name.find(w) > 0:
+                    url_song = url_song.replace(w, f"%{int(ord(w) - 12)}")
+            print(url_song)
+            url_song = url_song.replace(" ", "+")
+            html = urllib.request.urlopen(
+                f"https://www.youtube.com/results?search_query={url_song}"
+            )
+            html_decoded = html.read().decode()
+            pattern = re.findall(r"watch\?v=(\S{11})", html_decoded)[0]
+            link = "https://www.youtube.com/watch?v=" + pattern
+            self.songs[name] = link
+            # Export the song in its format given
+            if not os.path.exists(
+                join(join(self.SPEEDSIVE_FOLDER_PATH, "songs"), f"{name}.mp3")
+            ):
+                self.export_audiofile(link, name)
+            return AudioSegment.from_file(
+                os.getcwd() + "/songs/" + name + ".mp3"
+            )
+        except:
+            pass
     # ***SLOW DOWN AND SPEED UP FUNCTION***
 
     def speedChange(self, sound: AudioSegment, speed: float) -> AudioSegment:

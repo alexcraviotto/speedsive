@@ -36,7 +36,7 @@ def makeVideo(name: str):
 
     txt_clip = TextClip(
         "levitate with\nspeed up tiktok audios",
-        fontsize=75,
+        fontsize=125,
         color="white",
         font="Helvetica-bold",
         kerning=0.7,

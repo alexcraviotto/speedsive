@@ -1,7 +1,7 @@
 from logger import logger
 def generatePlaylistID():
     try:
-        with open('././speedsive/playlists.txt','r+') as fp:
+        with open('playlists.txt','r+') as fp:
             lines = fp.readlines()
             fp.seek(0)
             fp.truncate()

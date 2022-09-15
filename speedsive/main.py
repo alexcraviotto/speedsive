@@ -16,7 +16,7 @@ db = Database()
 md = MusicConverter()
 sp = Spotify()
 
-limit = 1
+limit = 10
 
 
 def main():

@@ -22,7 +22,7 @@ class Youtube:
             Credentials: Credentials using OAuth 2.0 access and refresh tokens.
         """
         try:
-            with open("speedsive/.secret/youtube/client_creds.json", "r") as read_file:
+            with open(".secret/youtube/client_creds.json", "r") as read_file:
                 resp = json.load(read_file)
             logger.info("Generating credentials...")
             return Credentials(
@@ -74,7 +74,7 @@ class Youtube:
 
         if r.ok:
             try:
-                with open("speedsive/.secret/youtube/client_creds.json", "r+") as read_file:
+                with open(".secret/youtube/client_creds.json", "r+") as read_file:
                     resp = json.load(read_file)
                     resp["access_token"] = r.json()["access_token"]
                     read_file.seek(0)
