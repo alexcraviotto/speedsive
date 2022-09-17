@@ -60,7 +60,7 @@ def makeVideo(name: str):
         f"./{name}.mp4",
         name,
         10,
-        "Thanks for watching :)\nIm not the owner of the songs and pictures used in the video, credits to their respective authors",
-        ["tiktok speed up audio", "speed up audio", "aesthetic audio"],
+        "Automatically uploaded by speedsive",
+        ["speedsive"],
         "private",
     )

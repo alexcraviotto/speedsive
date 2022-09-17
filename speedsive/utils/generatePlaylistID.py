@@ -1,4 +1,5 @@
 from logger import logger
+
 def generatePlaylistID():
     try:
         with open('playlists.txt','r+') as fp:

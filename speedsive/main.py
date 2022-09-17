@@ -11,11 +11,12 @@ from apscheduler.schedulers.blocking import BlockingScheduler
 from utils.removeFile import removeFile
 from os.path import join
 
-logger.info("__Starting megagigachad Bot__")
+logger.info("Speedsive starting")
 db = Database()
 md = MusicConverter()
 sp = Spotify()
 
+# Limit of songs that you want to download and compile in the video, it is not recommended a number higher than 15 because it would be a too long video
 limit = 10
 
 

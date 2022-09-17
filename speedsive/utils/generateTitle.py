@@ -3,6 +3,9 @@ import sys, os
 sys.path.append(os.path.abspath(".."))
 from db.database import Database
 
+"""
+Generate a title by adding the corresponding part number from the database
+"""
 
 def generateTitle():
     database = Database()
